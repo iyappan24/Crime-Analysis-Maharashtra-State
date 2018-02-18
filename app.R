@@ -182,17 +182,18 @@ classify_polarity <- function(textColumns,algorithm="bayes",pstrong=0.5,pweak=1.
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ui <-dashboardPage(skin = "black",
 
-  dashboardHeader(title = "DASHBOARD"),
+  dashboardHeader(title = "CRIME ANALYTICS"),
   
   dashboardSidebar(
     
   fluidPage( 
-    sidebarMenu( titlePanel(h3("CRIME ANALYTICS")),
+    sidebarMenu( titlePanel("M E N U"),
                  menuItem("STATE WISE",tabName = "stat",icon = icon("stats",lib="glyphicon")),
                  menuItem("DISTRICT WISE ",tabName = "dist",icon = icon("stats",lib="glyphicon")),
                  menuItem("CRIME MAP",tabName = "maps",icon = icon("map-marker",lib = "glyphicon")),
                  menuItem("EVENTS",tabName = "twitter",icon = icon("screenshot",lib="glyphicon")),
-                 menuItem("FORECAST CRIME",tabName = "forecast",icon = icon("sort-by-attributes",lib ="glyphicon" ))
+                 menuItem("FORECAST CRIME",tabName = "forecast",icon = icon("sort-by-attributes",lib ="glyphicon" )),
+                 menuItem("DISCLAIMER",tabName = "disclaim",icon = icon("alert",lib="glyphicon"))
    
     )
     
@@ -336,6 +337,29 @@ ui <-dashboardPage(skin = "black",
       )      
             
             )
+    
+    ,
+    
+    tabItem(tabName = "disclaim",
+            
+        
+      fluidRow(
+        
+        box(width = '100%',
+          
+           HTML(
+             "<div class='jumbotron'>
+             <p><h3>DISCLAIMER</h3> </p> <br>
+             <p>Data sets are from public data sources .Data sets were used for demonstration purpose only. The accuracy of the result may vary  according to the data</p>
+             <p><h4>Click Here To View the Source</h4> </p> <br>
+            <p><a class='btn btn-primary btn-lg' button id='tabBut' href='https://www.kaggle.com/rajanand/crime-in-india' target = '_blank'>DATA SOURCE</a></p>
+            </div>"
+           )
+        )
+        
+      )
+      
+    )
     )
     )#end of fluid page
   ) #end of dashboard body
@@ -744,7 +768,6 @@ observe( {
                }
             incProgress(amount = 1,message = "Done")
            })
-            
             p <- plot_ly(x = ds, y = dat,type = 'scatter',mode='lines+markers',name = 'History')%>%add_trace(y = pred,type = 'scatter', mode = 'lines+markers',name='forecast')%>%add_trace(y = upper,type = 'scatter', mode = 'lines',line = list(color = 'transparent'),name= 'Upper Bound',showlegend=FALSE)%>%add_trace(y = lower,type = 'scatter', mode = 'lines',fill = 'tonexty',line = list(color = 'transparent'),name ='Lower Bound',showlegend=FALSE)%>%layout(title = paste("Forecast till the year",(2013+Hvalue)),
                      paper_bgcolor='rgb(255,255,255)', plot_bgcolor='rgb(229,229,229)',
                      xaxis = list(title ="YEAR",
@@ -772,6 +795,9 @@ observe( {
       )
       
    
+#--------------------------------------- DISCLAIMER TAB ----------------------------------------------------------#
+      
+
 
       
     }#end of operations
